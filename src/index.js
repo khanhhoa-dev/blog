@@ -9,6 +9,10 @@ const port = 3003;
 //Static file
 app.use(express.static(path.join(__dirname, 'public')))
 
+//Middleware: Giup đọc dữ liệu Form và Json
+app.use(express.urlencoded()) // Giup người dùng đọc dữ liệu từ form có method=POST
+app.use(express.json())
+
 // Config HandleBars
 app.engine(
   '.hbs',
@@ -32,6 +36,15 @@ app.use(morgan('dev'));
 app.get('/blog', (req, res) => {
   res.render('blog');
 });
+
+app.get('/search', (req, res) => {
+  res.render('search');
+})
+
+app.post('/search', (req, res) => {
+  res.send('Data');
+})
+
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
