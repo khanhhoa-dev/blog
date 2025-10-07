@@ -1,36 +1,30 @@
 {
   "name": "blog_node",
   "version": "1.0.0",
-  "main": "src/index.js",
+  "main": "dist/index.js",
   "scripts": {
+    "dev": "ts-node src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "watch": "sass src/resources/scss:src/public/css --watch --no-source-map",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "watch": "sass src/resources/scss:src/public/css --watch --no-source-map",
-    "dev": "nodemon --inspect src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/khanhhoa-dev/blog.git"
-  },
-  "keywords": [
-    "blog",
-    "khanhhoa"
-  ],
   "author": "lekhanhhoa",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/khanhhoa-dev/blog/issues"
-  },
-  "homepage": "https://github.com/khanhhoa-dev/blog#readme",
-  "description": "",
   "dependencies": {
     "express": "^5.1.0",
     "express-handlebars": "^8.0.3",
     "sass": "^1.93.2"
   },
   "devDependencies": {
+    "@types/express": "^5.0.3",
+    "@types/morgan": "^1.9.10",
+    "@types/node": "^24.7.0",
     "morgan": "^1.10.1",
-    "prettier": "^3.6.2"
+    "prettier": "^3.6.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
   }
 }

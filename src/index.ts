@@ -1,17 +1,17 @@
-const express = require('express');
-const morgan = require('morgan');
-const { engine } = require('express-handlebars');
-const path = require('path');
+import express, { Request, Response } from 'express';
+import { engine } from 'express-handlebars';
+import morgan from 'morgan';
+import path from 'path';
 
 const app = express();
 const port = 3003;
 
 //Static file
-app.use(express.static(path.join(__dirname, 'public')))
+app.use(express.static(path.join(__dirname, 'public')));
 
 //Middleware: Giup đọc dữ liệu Form và Json
-app.use(express.urlencoded()) // Giup người dùng đọc dữ liệu từ form có method=POST
-app.use(express.json())
+app.use(express.urlencoded()); // Giup người dùng đọc dữ liệu từ form có method=POST
+app.use(express.json());
 
 // Config HandleBars
 app.engine(
@@ -28,23 +28,22 @@ app.set('views', path.join(__dirname, 'resources/views'));
 
 //HTTP Logger
 app.use(morgan('dev'));
-app.get('/', (req, res) => {
+app.get('/', (req: Request, res: Response) => {
   res.render('home');
 });
 
 app.use(morgan('dev'));
-app.get('/blog', (req, res) => {
+app.get('/blog', (req: Request, res: Response) => {
   res.render('blog');
 });
 
-app.get('/search', (req, res) => {
+app.get('/search', (req: Request, res: Response) => {
   res.render('search');
-})
+});
 
-app.post('/search', (req, res) => {
+app.post('/search', (req: Request, res: Response) => {
   res.send('Data');
-})
-
+});
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
