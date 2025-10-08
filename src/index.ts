@@ -3,6 +3,8 @@ import { engine } from 'express-handlebars';
 import morgan from 'morgan';
 import path from 'path';
 
+import router from './routers';
+
 const app = express();
 const port = 3003;
 
@@ -15,36 +17,21 @@ app.use(express.json());
 
 // Config HandleBars
 app.engine(
-  '.hbs',
-  engine({
-    extname: '.hbs',
-    defaultLayout: 'main',
-    layoutsDir: path.join(__dirname, 'resources/views/layouts'),
-    partialsDir: path.join(__dirname, 'resources/views/partials'),
-  })
+    '.hbs',
+    engine({
+        extname: '.hbs',
+        defaultLayout: 'main',
+        layoutsDir: path.join(__dirname, 'resources/views/layouts'),
+        partialsDir: path.join(__dirname, 'resources/views/partials'),
+    })
 );
 app.set('view engine', '.hbs');
 app.set('views', path.join(__dirname, 'resources/views'));
 
 //HTTP Logger
 app.use(morgan('dev'));
-app.get('/', (req: Request, res: Response) => {
-  res.render('home');
-});
-
-app.use(morgan('dev'));
-app.get('/blog', (req: Request, res: Response) => {
-  res.render('blog');
-});
-
-app.get('/search', (req: Request, res: Response) => {
-  res.render('search');
-});
-
-app.post('/search', (req: Request, res: Response) => {
-  res.send('Data');
-});
+router(app);
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
+    console.log(`Example app listening on port ${port}`);
 });
