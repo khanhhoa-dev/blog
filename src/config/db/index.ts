@@ -1,7 +1,7 @@
 //Kết nối đến cơ sở dữ liệu
 import mongoose from 'mongoose';
 
-async function connect() {
+async function Connect() {
     try {
         await mongoose.connect(
             'mongodb://localhost:27017/khanhhoa_education_dev'
@@ -12,4 +12,4 @@ async function connect() {
     }
 }
 
-export default { connect };
+export default { Connect };

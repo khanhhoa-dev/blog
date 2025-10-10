@@ -1,19 +1,17 @@
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
+
 import Course from '../models/Course';
+import plainObject from '../../util/mongoose';
 
 class SiteController {
     //[GET] :/home
-    async home(req: Request, res: Response) {
+    async home(req: Request, res: Response, next: NextFunction) {
         try {
-            await Course.create({
-                name: 'NodeJS',
-                description: 'Learn backend',
-                image: 'https://camo.githubusercontent.com/030079e5e56562613068058b4a0b04a8972bbd22cf3fc852548eec3ffd9d7131/68747470733a2f2f6e6f6465692e636f2f6e706d2f6d6f6e676f6f73652e706e67',
-            });
-            const coures = await Course.find({}); //Hành động gọi đến Model để lấy dữ liệu
-            res.json(coures);
+            const courses = await Course.find({}); //Hành động gọi đến Model để lấy dữ liệu
+            const plainCourse = plainObject.multipleMongooseObject(courses);
+            res.render('home', { plainCourse });
         } catch (error) {
-            console.log('ERROR!!!', error);
+            next(error);
         }
         // res.render('home');
     }

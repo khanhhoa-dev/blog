@@ -6,7 +6,7 @@ import path from 'path';
 import router from './routers';
 import db from './config/db';
 
-db.connect();
+db.Connect();
 const app = express();
 const port = 3003;
 
