@@ -3,10 +3,12 @@ import { Application } from 'express';
 
 import blogRouter from './blog';
 import sideRouter from './site';
+import courseRouter from './course';
 
 function router(app: Application) {
     //nếu request nào bắt đầu bằng /blog, hãy chuyển quyền xử lý sang blogRouter.
     //blogRouter chính là một middleware con
+    app.use('/courses', courseRouter);
     app.use('/blog', blogRouter);
     app.use('/', sideRouter);
 }
