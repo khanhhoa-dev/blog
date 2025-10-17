@@ -8,6 +8,7 @@ router.get('/create', courseController.create);
 router.post('/store', courseController.store);
 router.get('/edit/:id', courseController.edit);
 router.put('/update/:id', courseController.update);
+router.delete('/:id', courseController.delete);
 router.get('/:slug', courseController.show);
 
 export default router;

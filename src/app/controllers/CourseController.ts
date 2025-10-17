@@ -65,6 +65,17 @@ class CourseController {
             next(error);
         }
     }
+
+    //[DELETE]: /courses/:id
+    async delete(req: Request, res: Response, next: NextFunction) {
+        try {
+            const id = req.params.id;
+            await Course.findByIdAndDelete(id);
+            res.status(200).json({ message: 'Xóa thành công' });
+        } catch (error) {
+            next(error);
+        }
+    }
 }
 
 export default new CourseController();
