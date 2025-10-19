@@ -5,7 +5,7 @@
     "scripts": {
         "eslint": "eslint \"src/**/*.{js,ts,tsx}\"",
         "eslint:fix": "eslint \"src/**/*.{js,ts,tsx}\" --fix",
-        "dev": "ts-node src/app.ts",
+        "dev": "nodemon",
         "build": "tsc",
         "start": "node dist/app.js",
         "watch": "sass src/resources/scss:src/public/css --watch --no-source-map",
@@ -16,9 +16,12 @@
     "author": "lekhanhhoa",
     "license": "ISC",
     "dependencies": {
+        "@types/mongoose-delete": "^1.0.6",
+        "bootstrap-icons": "^1.13.1",
         "express": "^5.1.0",
         "express-handlebars": "^8.0.3",
         "mongoose": "^8.19.1",
+        "mongoose-delete": "^1.0.2",
         "mongoose-slug-updater": "^3.3.0",
         "sass": "^1.93.2"
     },
@@ -37,6 +40,7 @@
         "jiti": "^2.6.1",
         "method-override": "^3.0.0",
         "morgan": "^1.10.1",
+        "nodemon": "^3.1.10",
         "prettier": "^3.6.2",
         "ts-node": "^10.9.2",
         "typescript": "^5.9.3",

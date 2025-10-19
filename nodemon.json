@@ -1,3 +1,6 @@
 {
-  "ext": "js json ts"
+    "watch": ["src"],
+    "ext": "ts,json",
+    "ignore": ["dist"],
+    "exec": "ts-node ./src/app.ts"
 }

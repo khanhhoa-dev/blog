@@ -34,7 +34,7 @@ class CourseController {
             formData.image = `https://files.fullstack.edu.vn/f8-prod/courses/${req.body.videoId}.png`;
             const store = new Course(formData);
             await store.save();
-            res.redirect('/');
+            res.redirect('/me/course');
         } catch (error) {
             next(error);
         }
@@ -70,8 +70,30 @@ class CourseController {
     async delete(req: Request, res: Response, next: NextFunction) {
         try {
             const id = req.params.id;
+            await Course.delete({ _id: id });
+            res.status(200).json({ message: 'Xóa thành công' });
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    //[DELETE]: /courses/force/:id
+    async deleteDestroy(req: Request, res: Response, next: NextFunction) {
+        try {
+            const id = req.params.id;
             await Course.findByIdAndDelete(id);
             res.status(200).json({ message: 'Xóa thành công' });
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    //[PATCH]: /courses/restore/:id
+    async restore(req: Request, res: Response, next: NextFunction) {
+        try {
+            const id = req.params.id;
+            await Course.restore({ _id: id });
+            res.redirect('/me/trash');
         } catch (error) {
             next(error);
         }

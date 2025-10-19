@@ -14,6 +14,19 @@ class MeCourseController {
             next(error);
         }
     }
+
+    //[GET]: /me/trash
+    async trash(req: Request, res: Response, next: NextFunction) {
+        try {
+            const courseSoftDelete = await Course.findWithDeleted({
+                deleted: true,
+            });
+            const data = plainObject.multipleMongooseObject(courseSoftDelete);
+            res.render('me/trash', { data });
+        } catch (error) {
+            next(error);
+        }
+    }
 }
 
 export default new MeCourseController();

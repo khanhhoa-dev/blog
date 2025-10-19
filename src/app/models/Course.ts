@@ -1,13 +1,21 @@
-// Schema(Lược đồ )
-//Là bản thiết kế cho dữ liệu — quy định một “document” có những thuộc tính nào, kiểu dữ liệu ra sao.
-import mongoose from 'mongoose';
 // @ts-ignore
 import slug from 'mongoose-slug-updater';
+import { Document } from 'mongoose';
+import mongoose from 'mongoose';
+import MongooseDelete, { SoftDeleteModel } from 'mongoose-delete';
 
-mongoose.plugin(slug);
 const Schema = mongoose.Schema;
 
-const CourseSchema = new Schema(
+interface ConfigSchema extends Document {
+    title: string;
+    description: string;
+    image: string;
+    videoId: string;
+    slug: string;
+}
+type ConfigModel = SoftDeleteModel<ConfigSchema>;
+
+const CourseSchema = new Schema<ConfigSchema, ConfigModel>(
     {
         title: { type: String, require: true },
         description: { type: String },
@@ -17,10 +25,20 @@ const CourseSchema = new Schema(
     },
     {
         timestamps: true,
-    }
+    },
 );
 
+CourseSchema.plugin(MongooseDelete as any, {
+    deleted: true,
+    deletedAt: true,
+    overrideMethods: 'all',
+});
+mongoose.plugin(slug);
+
 // Gắn Schema vào connection hiện tại của db
-const Course = mongoose.model('Course', CourseSchema);
+const Course = mongoose.model<ConfigSchema, ConfigModel>(
+    'Course',
+    CourseSchema,
+);
 
 export default Course;
