@@ -71,7 +71,7 @@ class CourseController {
         try {
             const id = req.params.id;
             await Course.delete({ _id: id });
-            res.status(200).json({ message: 'Xóa thành công' });
+            res.redirect('/me/course');
         } catch (error) {
             next(error);
         }
@@ -96,6 +96,42 @@ class CourseController {
             res.redirect('/me/trash');
         } catch (error) {
             next(error);
+        }
+    }
+
+    //[POST]: /courses/select-course-action option: delete, restore, permanentlyDelete
+    async selectAllChecked(req: Request, res: Response, next: NextFunction) {
+        switch (req.body.action) {
+            case 'delete':
+                try {
+                    await Course.delete({ _id: { $in: req.body.courseId } });
+                    res.redirect('/me/course');
+                } catch (error) {
+                    next(error);
+                }
+                break;
+            case 'restore':
+                try {
+                    await Course.restore({ _id: { $in: req.body.courseId } });
+                    res.redirect('/me/trash');
+                } catch (error) {
+                    next(error);
+                }
+                break;
+            case 'permanentlyDelete':
+                try {
+                    await Course.deleteMany(
+                        { _id: { $in: req.body.courseId } },
+                        { force: true }, //Xóa vĩnh viễn khỏi DB(Hard Delete)
+                    );
+
+                    res.redirect('/me/trash');
+                } catch (error) {
+                    next(error);
+                }
+                break;
+            default:
+                res.json({ message: 'Không tìm thấy Action phù hợp' });
         }
     }
 }

@@ -7,9 +7,14 @@ class MeCourseController {
     //[GET]: /me/course
     async show(req: Request, res: Response, next: NextFunction) {
         try {
-            const course = await Course.find({});
+            const [course, countDocumentDelete] = await Promise.all([
+                Course.find({}),
+                Course.countDocumentsWithDeleted({
+                    deleted: true,
+                }),
+            ]);
             const data = plainObject.multipleMongooseObject(course);
-            res.render('me/meCourse', { data });
+            res.render('me/meCourse', { data, countDocumentDelete });
         } catch (error) {
             next(error);
         }

@@ -1,7 +1,11 @@
-<div class="container mt-4">
+<form
+    class="container mt-4"
+    method="POST"
+    action="/courses/select-course-action"
+>
     <div class="d-flex justify-content-between ml-2">
         <h2>Khóa học của tôi</h2>
-        <a href="/me/trash">
+        <a href="/me/trash" style="text-decoration: none">
             Thùng rác
             <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -15,12 +19,38 @@
                     d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"
                 />
             </svg>
+            ({{countDocumentDelete}})
         </a>
     </div>
+    {{!-- Form Check All Course --}} {{#if data}}
+    <div class="form-check d-flex align-items-center mt-4">
+        <input
+            class="form-check-input check-all-course"
+            type="checkbox"
+            id="flexCheckDefault"
+        />
+        <label class="form-check-labe" for="flexCheckDefault">
+            Chọn tất cả
+        </label>
+        <select
+            name="action"
+            class="form-select width-action-select"
+            aria-label="Default select example"
+            required
+        >
+            <option value="">-- Hành động --</option>
+            <option value="delete">Xóa</option>
+        </select>
+        <button class="btn btn-primary disabled btn-submit-check" type="submit">
+            Thực hiện
+        </button>
+    </div>
+    {{/if}}
+
     <table class="table table-success table-striped mt-4">
         <thead>
             <tr>
-                <th scope="col">STT</th>
+                <th scope="col" colspan="2">STT</th>
                 <th scope="col">Tên</th>
                 <th scope="col">Mô tả</th>
                 <th scope="col" colspan="2">Ngày thêm</th>
@@ -29,7 +59,15 @@
         <tbody>
             {{#each data}}
             <tr data-row-id="{{this._id}}">
-                <th scope="row">{{sum @index 1}}</th>
+                <td>
+                    <input
+                        class="form-check-input check-item-course"
+                        type="checkbox"
+                        value="{{this._id}}"
+                        name="courseId[]"
+                    />
+                </td>
+                <td scope="row">{{sum @index 1}}</td>
                 <td>{{this.title}}</td>
                 <td>{{this.description}}</td>
                 <td>{{this.createdAt}}</td>
@@ -63,7 +101,7 @@
             {{/each}}
         </tbody>
     </table>
-</div>
+</form>
 
 <div id="delete-course" class="modal" tabindex="-1">
     <div class="modal-dialog">
@@ -125,9 +163,37 @@
                 row.style.transition = 'opacity 0.5s';
                 row.style.opacity = '0';
                 setTimeout(() => row.remove(), 500);
+                window.location.href = '/me/course';
             }
         } catch (error) {
             console.error(error);
         }
     });
+
+    //Check Course
+    const checkAll = $('.check-all-course');
+    const checkOnlyItem = $('.check-item-course');
+    const btnSubmit = $('.btn-submit-check');
+
+    checkAll.change(function () {
+        const checkChange = $(this).prop('checked');
+        checkOnlyItem.prop('checked', checkChange);
+        ButtonActionSubmit();
+    });
+
+    checkOnlyItem.change(function () {
+        const checkLength =
+            checkOnlyItem.length === $('.check-item-course:checked').length;
+        checkAll.prop('checked', checkLength);
+        ButtonActionSubmit();
+    });
+
+    function ButtonActionSubmit() {
+        const stateSubmit = $('.check-item-course:checked').length;
+        if (stateSubmit > 0) {
+            btnSubmit.removeClass('disabled');
+        } else {
+            btnSubmit.addClass('disabled');
+        }
+    }
 </script>
