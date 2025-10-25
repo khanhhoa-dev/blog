@@ -51,9 +51,11 @@
         <thead>
             <tr>
                 <th scope="col" colspan="2">STT</th>
-                <th scope="col">Tên</th>
-                <th scope="col">Mô tả</th>
-                <th scope="col" colspan="2">Ngày thêm</th>
+                <th scope="col">Tên {{{sortable 'name' sort}}}</th>
+                <th scope="col">Mô tả {{{sortable 'description' sort}}}</th>
+                <th scope="col" colspan="2">
+                    Ngày thêm {{{sortable 'createdAt' sort}}}
+                </th>
             </tr>
         </thead>
         <tbody>

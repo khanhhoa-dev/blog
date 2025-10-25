@@ -7,8 +7,19 @@ class MeCourseController {
     //[GET]: /me/course
     async show(req: Request, res: Response, next: NextFunction) {
         try {
+            let courseQuery = Course.find({});
+
+            if (Object.prototype.hasOwnProperty.call(req.query, '_sort')) {
+                const name = req.query.column as string;
+                const type = req.query.type as string;
+
+                const sortValue = type === 'desc' ? -1 : 1;
+                courseQuery = courseQuery.sort({
+                    [name]: sortValue,
+                });
+            }
             const [course, countDocumentDelete] = await Promise.all([
-                Course.find({}),
+                courseQuery,
                 Course.countDocumentsWithDeleted({
                     deleted: true,
                 }),
