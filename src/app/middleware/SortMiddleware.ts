@@ -6,7 +6,7 @@ interface Sort {
     column?: string;
 }
 
-function SortMiddleware(req: Request, res: Response, next: NextFunction) {
+function sortMiddleware(req: Request, res: Response, next: NextFunction) {
     const sort: Sort = {
         enable: false,
         type: 'default',
@@ -23,4 +23,4 @@ function SortMiddleware(req: Request, res: Response, next: NextFunction) {
     next();
 }
 
-export default SortMiddleware;
+export default sortMiddleware;

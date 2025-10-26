@@ -6,7 +6,8 @@ import methodOverride from 'method-override';
 
 import router from './routers';
 import db from './config/db';
-import SortMiddleware from './app/middleware/SortMiddleware';
+import sortMiddleware from './app/middleware/SortMiddleware';
+import sortCourse from './helpers/sortCourse';
 
 db.Connect();
 const app = express();
@@ -23,7 +24,7 @@ app.use(express.urlencoded({ extended: true })); // Giup người dùng đọc d
 app.use(express.json());
 
 //Custom Middleware
-app.use(SortMiddleware);
+app.use(sortMiddleware);
 
 // Config HandleBars
 app.engine(
@@ -34,45 +35,7 @@ app.engine(
         layoutsDir: path.join(__dirname, 'resources/views/layouts'),
         partialsDir: path.join(__dirname, 'resources/views/partials'),
         //Nơi đăng ký các hàm trợ giúp
-        helpers: {
-            sum(a: number, b: number) {
-                return a + b;
-            },
-            sortable(
-                field: string,
-                sort: {
-                    type: 'default' | 'asc' | 'desc';
-                    enable: boolean;
-                    column?: string;
-                },
-            ) {
-                interface Icon {
-                    default: string;
-                    asc: string;
-                    desc: string;
-                }
-
-                const checkType = field === sort.column ? sort.type : 'default';
-
-                const icon: Icon = {
-                    default: 'bi bi-stack',
-                    asc: 'bi bi-sort-alpha-up',
-                    desc: 'bi bi-sort-alpha-down',
-                };
-
-                const type = {
-                    default: 'desc',
-                    asc: 'desc',
-                    desc: 'asc',
-                };
-
-                const types = type[checkType];
-                const icons = icon[checkType];
-                return `<a href="?_sort&column=${field}&type=${types}">
-                        <i class="${icons}"></i>
-                    </a>`;
-            },
-        },
+        helpers: sortCourse,
     }),
 );
 app.set('view engine', '.hbs');
